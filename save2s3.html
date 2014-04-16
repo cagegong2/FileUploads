@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Transloadit Demo</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Transloadit Demo</h1>
+		<!-- This is your upload form -->
+		<form id="upload-form" action="" enctype="multipart/form-data" method="POST">
+			<input type="file" name="file" />
+			<input id="submit" type="submit" value="submit" />
+		</form>
+		<div>Browser Preview</div>
+		<div><img id="imgpre"></img></div>
+		<div>Uploaded</div>
+		<div><img id="uploadedimg"></img></div>
+		<div>Processed</div>
+		<div><img id="processedimg"></img></div>
+	</div>
+
+	<!-- We need to include jQuery to make the Transloadit jQuery plugin work -->
+	<!-- You can choose jQuery version 1.9.0 or any newer version here -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+	<!-- We include the Transloadit jQuery plugin here -->
+	<script src="//assets.transloadit.com/js/jquery.transloadit2-v2-latest.js"></script>
+
+	<!-- We initialize the Transloadit plugin here -->
+	<script type="text/javascript">
+	$(function() {
+      // We reference our html form here
+      $('#upload-form').transloadit({
+        // We want to wait for all encodings to finish before the form
+        // is submitted.
+        wait: true,
+        // The upload to Transloadit should start as soon as the user
+        // selects some files.
+        triggerUploadOnFileSelection: false,
+        params: {
+        	auth: {
+            // This is your API key.
+            key: "445f72b0c54811e3b7c07d4cd434482c"
+        },
+          // Our assembly instructions just contain two steps for now.
+          // You can name the steps how you like.
+          template_id: "4771c350c56a11e3b7c07d4cd434482c",
+      },
+      
+  onFileSelect: function(fileName, $fileInputField){
+  	console.log("onFileSelect " + fileName);
+  	console.log($fileInputField);
+  	var reader = new FileReader();
+  	reader.onload = (function (imgpre) {
+  		return function (evt) {
+  			imgpre.attr("src",evt.target.result);
+  		};
+  	}($("#imgpre")));
+  	reader.readAsDataURL($fileInputField[0].files[0]);
+  },
+  onStart: function(assembly){
+  	console.log("onStart " + assembly);
+  	console.log(assembly);
+  },
+  onProgress: function(bytesReceived, bytesExpected){
+  	console.log("onProgress bytesReceived: " + bytesReceived+", bytesExpected: "+ bytesExpected);
+  },
+  onUpload:function(upload){
+  	console.log("onUpload " + upload);
+  	console.log(upload);
+  	$("#uploadedimg").attr("src",upload.url);
+  },
+  onResult: function(step, result){
+  	console.log("onResult ");
+  	console.log(step);
+  	console.log(result);
+  	$("#processedimg").attr("src",result.ssl_url);
+  },
+  onError:function(assembly){
+  	console.log("onError " + assembly);
+  	console.log(assembly);
+  },
+  onSuccess:function(assembly){
+  	console.log("onSuccess");
+  	console.log(assembly);
+  }
+});
+});
+</script>
+</body>
+</html>

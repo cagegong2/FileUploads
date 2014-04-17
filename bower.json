@@ -1,0 +1,28 @@
+{
+  "name": "FileUploads",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "bootstrap": "~3.1.0",
+    "angular": "*",
+    "json2":"*",
+    "requirejs": "2.1.9",
+    "iCheck":"*"
+  },
+  "exportsOverride": {
+    "angular": {
+      "scripts/libs": "angular.min.js{,.map}"
+    },
+    "bootstrap": {
+      "fonts": "dist/fonts/*.{eot,svg,ttf,woff}",
+      "styles": "less/*.less"
+    },
+    "jquery": {
+      "scripts/libs": "none"
+    },
+    "requirejs": {
+      "scripts/libs": "require.js"
+    }
+  }
+}
